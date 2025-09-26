@@ -2,95 +2,119 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* KejaYangu Design System - Kenyan Rental Platform with Sui Blockchain */
 
 @layer base {
   :root {
+    /* Base colors */
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --foreground: 220 26% 14%;
 
+    /* Card system */
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 220 26% 14%;
 
+    /* Popover system */
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 220 26% 14%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Brand colors - Deep blue for trust */
+    --primary: 215 84% 50%;
+    --primary-foreground: 0 0% 100%;
+    --primary-glow: 215 84% 65%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Success green - Kenyan inspiration */
+    --success: 145 68% 45%;
+    --success-foreground: 0 0% 100%;
+    --success-light: 145 68% 92%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* Warning orange - Kenyan flag inspired */
+    --warning: 25 95% 58%;
+    --warning-foreground: 0 0% 100%;
+    --warning-light: 25 95% 95%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Error red */
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    /* Secondary grays */
+    --secondary: 220 14% 96%;
+    --secondary-foreground: 220 26% 14%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    /* Muted variants */
+    --muted: 220 13% 91%;
+    --muted-foreground: 220 9% 46%;
 
-    --radius: 0.5rem;
+    /* Accent - Light blue */
+    --accent: 215 84% 96%;
+    --accent-foreground: 215 84% 50%;
 
-    --sidebar-background: 0 0% 98%;
+    /* Form elements */
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 215 84% 50%;
 
-    --sidebar-foreground: 240 5.3% 26.1%;
+    /* Design tokens */
+    --radius: 0.75rem;
 
-    --sidebar-primary: 240 5.9% 10%;
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
+    --gradient-success: linear-gradient(135deg, hsl(var(--success)), hsl(145 68% 60%));
+    --gradient-hero: linear-gradient(135deg, hsl(215 84% 50%), hsl(215 84% 35%));
+    --gradient-card: linear-gradient(145deg, hsl(0 0% 100%), hsl(220 14% 98%));
 
-    --sidebar-primary-foreground: 0 0% 98%;
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 hsl(220 26% 14% / 0.05);
+    --shadow-md: 0 4px 6px -1px hsl(220 26% 14% / 0.1), 0 2px 4px -2px hsl(220 26% 14% / 0.1);
+    --shadow-lg: 0 10px 15px -3px hsl(220 26% 14% / 0.1), 0 4px 6px -4px hsl(220 26% 14% / 0.1);
+    --shadow-glow: 0 0 20px hsl(var(--primary) / 0.3);
+    --shadow-success: 0 0 20px hsl(var(--success) / 0.2);
 
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    /* Animations */
+    --transition-base: all 0.2s ease-out;
+    --transition-slow: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    --background: 220 26% 8%;
+    --foreground: 0 0% 95%;
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    --card: 220 26% 10%;
+    --card-foreground: 0 0% 95%;
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 220 26% 10%;
+    --popover-foreground: 0 0% 95%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 215 84% 65%;
+    --primary-foreground: 220 26% 8%;
+    --primary-glow: 215 84% 80%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --success: 145 68% 55%;
+    --success-foreground: 220 26% 8%;
+    --success-light: 145 68% 15%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --warning: 25 95% 68%;
+    --warning-foreground: 220 26% 8%;
+    --warning-light: 25 95% 15%;
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --destructive: 0 84% 70%;
+    --destructive-foreground: 220 26% 8%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --secondary: 220 26% 15%;
+    --secondary-foreground: 0 0% 95%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --muted: 220 26% 18%;
+    --muted-foreground: 220 9% 60%;
+
+    --accent: 220 26% 15%;
+    --accent-foreground: 215 84% 65%;
+
+    --border: 220 26% 18%;
+    --input: 220 26% 18%;
+    --ring: 215 84% 65%;
+
+    --gradient-hero: linear-gradient(135deg, hsl(215 84% 65%), hsl(215 84% 45%));
+    --gradient-card: linear-gradient(145deg, hsl(220 26% 10%), hsl(220 26% 12%));
   }
 }
 
@@ -101,5 +125,36 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+  }
+
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Custom animations */
+  @keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-10px) rotate(3deg); }
+  }
+  
+  @keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 20px hsl(var(--primary) / 0.3); }
+    50% { box-shadow: 0 0 30px hsl(var(--primary) / 0.5); }
+  }
+
+  /* Utility classes */
+  .line-clamp-1 {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 }
