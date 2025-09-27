@@ -1,17 +1,17 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Wallet, Menu, X } from "lucide-react";
+import { Wallet, Menu, X, LogOut } from "lucide-react";
+import { useWalletOperations } from "@/hooks/useWalletOperations";
+import { formatAddress, isWalletConnected } from "@/contexts/WalletContext";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isWalletConnected, setIsWalletConnected] = useState(false);
   const location = useLocation();
-
-  const connectWallet = () => {
-    // Simulate wallet connection
-    setIsWalletConnected(!isWalletConnected);
-  };
+  const { wallet, isProcessing, connectWallet, disconnectWallet } = useWalletOperations();
+  
+  const walletConnected = isWalletConnected(wallet);
+  const walletAddress = wallet.account?.address;
 
   const navItems = [
     { href: "/", label: "Properties" },
@@ -50,17 +50,37 @@ const Navbar = () => {
 
           {/* Wallet Connection */}
           <div className="hidden md:flex items-center space-x-4">
-            <Button
-              onClick={connectWallet}
-              variant={isWalletConnected ? "success" : "outline"}
-              size="sm"
-              className="flex items-center space-x-2"
-            >
-              <Wallet className="h-4 w-4" />
-              <span>
-                {isWalletConnected ? "Connected" : "Connect Wallet"}
-              </span>
-            </Button>
+            {walletConnected ? (
+              <div className="flex items-center space-x-2">
+                <div className="px-3 py-1 bg-muted rounded-lg">
+                  <span className="text-sm font-mono">
+                    {formatAddress(walletAddress!)}
+                  </span>
+                </div>
+                <Button
+                  onClick={disconnectWallet}
+                  variant="ghost"
+                  size="sm"
+                  disabled={isProcessing}
+                  className="flex items-center space-x-1"
+                >
+                  <LogOut className="h-4 w-4" />
+                </Button>
+              </div>
+            ) : (
+              <Button
+                onClick={connectWallet}
+                variant="outline"
+                size="sm"
+                disabled={isProcessing}
+                className="flex items-center space-x-2"
+              >
+                <Wallet className="h-4 w-4" />
+                <span>
+                  {isProcessing ? "Connecting..." : "Connect Wallet"}
+                </span>
+              </Button>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -92,17 +112,38 @@ const Navbar = () => {
                   {item.label}
                 </Link>
               ))}
-              <Button
-                onClick={connectWallet}
-                variant={isWalletConnected ? "success" : "outline"}
-                size="sm"
-                className="flex items-center space-x-2 w-fit"
-              >
-                <Wallet className="h-4 w-4" />
-                <span>
-                  {isWalletConnected ? "Connected" : "Connect Wallet"}
-                </span>
-              </Button>
+              {walletConnected ? (
+                <div className="flex flex-col space-y-2">
+                  <div className="px-3 py-1 bg-muted rounded-lg">
+                    <span className="text-sm font-mono">
+                      {formatAddress(walletAddress!)}
+                    </span>
+                  </div>
+                  <Button
+                    onClick={disconnectWallet}
+                    variant="ghost"
+                    size="sm"
+                    disabled={isProcessing}
+                    className="flex items-center space-x-2 w-fit"
+                  >
+                    <LogOut className="h-4 w-4" />
+                    <span>Disconnect</span>
+                  </Button>
+                </div>
+              ) : (
+                <Button
+                  onClick={connectWallet}
+                  variant="outline"
+                  size="sm"
+                  disabled={isProcessing}
+                  className="flex items-center space-x-2 w-fit"
+                >
+                  <Wallet className="h-4 w-4" />
+                  <span>
+                    {isProcessing ? "Connecting..." : "Connect Wallet"}
+                  </span>
+                </Button>
+              )}
             </div>
           </div>
         )}
