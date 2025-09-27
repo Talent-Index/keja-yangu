@@ -8,7 +8,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Calendar, MapPin, User, CreditCard, Shield, Wallet } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useWalletOperations } from "@/hooks/useWalletOperations";
-import { formatAddress, isWalletConnected } from "@/contexts/WalletContext";
+import { formatAddress } from "@/contexts/WalletContext";
 
 interface Property {
   id: string;
@@ -39,7 +39,7 @@ const BookingModal = ({ property, isOpen, onClose, onBookingComplete }: BookingM
   });
   const { toast } = useToast();
   const { wallet, isProcessing, connectWallet, createBookingTransaction } = useWalletOperations();
-  const walletConnected = isWalletConnected(wallet);
+  const walletConnected = wallet.connected;
 
   if (!property) return null;
 

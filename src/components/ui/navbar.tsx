@@ -3,14 +3,14 @@ import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Wallet, Menu, X, LogOut } from "lucide-react";
 import { useWalletOperations } from "@/hooks/useWalletOperations";
-import { formatAddress, isWalletConnected } from "@/contexts/WalletContext";
+import { formatAddress } from "@/contexts/WalletContext";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
   const { wallet, isProcessing, connectWallet, disconnectWallet } = useWalletOperations();
   
-  const walletConnected = isWalletConnected(wallet);
+  const walletConnected = wallet.connected;
   const walletAddress = wallet.account?.address;
 
   const navItems = [

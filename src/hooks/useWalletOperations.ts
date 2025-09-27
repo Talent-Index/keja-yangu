@@ -13,14 +13,15 @@ interface BookingTransaction {
 }
 
 export const useWalletOperations = () => {
-  const wallet = useWalletContext();
+  const { wallet, account, connected, wallets, connectWallet, disconnectWallet } = useWalletContext();
   const [isProcessing, setIsProcessing] = useState(false);
 
-  const connectWallet = async () => {
+  const handleConnectWallet = async () => {
     try {
       setIsProcessing(true);
-      if (!wallet.connected) {
-        await wallet.connect();
+      if (!connected && wallets.length > 0) {
+        // Connect to the first available wallet
+        await connectWallet({ wallet: wallets[0] });
         toast({
           title: "Wallet Connected",
           description: "Successfully connected to your Sui wallet",
@@ -38,10 +39,10 @@ export const useWalletOperations = () => {
     }
   };
 
-  const disconnectWallet = async () => {
+  const handleDisconnectWallet = async () => {
     try {
       setIsProcessing(true);
-      await wallet.disconnect();
+      await disconnectWallet();
       toast({
         title: "Wallet Disconnected",
         description: "Successfully disconnected from wallet",
@@ -59,7 +60,7 @@ export const useWalletOperations = () => {
   };
 
   const createBookingTransaction = async (booking: BookingTransaction) => {
-    if (!wallet.connected || !wallet.account) {
+    if (!connected || !account) {
       toast({
         title: "Wallet Not Connected",
         description: "Please connect your wallet to continue",
@@ -77,7 +78,7 @@ export const useWalletOperations = () => {
         effects: {
           created: [{
             objectId: `0x${Math.random().toString(16).substr(2, 9).padStart(64, '0')}`,
-            owner: { AddressOwner: wallet.account.address }
+            owner: { AddressOwner: account.address }
           }]
         }
       };
@@ -89,7 +90,7 @@ export const useWalletOperations = () => {
         id: mockTransaction.effects.created[0].objectId,
         transactionDigest: mockTransaction.digest,
         propertyId: booking.propertyId,
-        tenant: wallet.account.address,
+        tenant: account.address,
         landlord: booking.landlordAddress,
         amount: booking.amount,
         checkIn: booking.dates.checkIn,
@@ -118,10 +119,13 @@ export const useWalletOperations = () => {
   };
 
   return {
-    wallet,
+    wallet: {
+      connected,
+      account: account,
+    },
     isProcessing,
-    connectWallet,
-    disconnectWallet,
+    connectWallet: handleConnectWallet,
+    disconnectWallet: handleDisconnectWallet,
     createBookingTransaction,
   };
 };
