@@ -5,10 +5,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Calendar, MapPin, User, CreditCard, Shield, Wallet } from "lucide-react";
+import { Calendar, MapPin, User, CreditCard, Shield } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { useWalletOperations } from "@/hooks/useWalletOperations";
-import { formatAddress } from "@/contexts/WalletContext";
 
 interface Property {
   id: string;
@@ -37,9 +35,8 @@ const BookingModal = ({ property, isOpen, onClose, onBookingComplete }: BookingM
     tenantEmail: "",
     tenantPhone: "",
   });
+  const [isProcessing, setIsProcessing] = useState(false);
   const { toast } = useToast();
-  const { wallet, isProcessing, connectWallet, createBookingTransaction } = useWalletOperations();
-  const walletConnected = wallet.connected;
 
   if (!property) return null;
 
@@ -51,16 +48,6 @@ const BookingModal = ({ property, isOpen, onClose, onBookingComplete }: BookingM
   };
 
   const handleBooking = async () => {
-    if (!walletConnected) {
-      toast({
-        title: "Wallet Required",
-        description: "Please connect your Sui wallet to complete booking.",
-        variant: "destructive",
-      });
-      await connectWallet();
-      return;
-    }
-
     if (!bookingData.checkIn || !bookingData.checkOut || !bookingData.tenantName || !bookingData.tenantEmail) {
       toast({
         title: "Missing Information",
@@ -70,32 +57,38 @@ const BookingModal = ({ property, isOpen, onClose, onBookingComplete }: BookingM
       return;
     }
 
-    const bookingTransactionData = {
+    setIsProcessing(true);
+    
+    // Simulate booking process
+    await new Promise(resolve => setTimeout(resolve, 2000));
+
+    const receipt = {
+      id: `receipt_${Date.now()}`,
+      transactionDigest: `0x${Math.random().toString(16).substr(2, 9).padStart(64, '0')}`,
       propertyId: property.id,
+      tenant: "Mock Address",
+      landlord: "0x9876543210abcdef9876543210abcdef9876543210abcdef9876543210abcdef",
       amount: property.price,
-      dates: {
-        checkIn: bookingData.checkIn,
-        checkOut: bookingData.checkOut,
-      },
-      landlordAddress: "0x9876543210abcdef9876543210abcdef9876543210abcdef9876543210abcdef", // Mock landlord address
+      checkIn: bookingData.checkIn,
+      checkOut: bookingData.checkOut,
+      timestamp: new Date().toISOString(),
+      status: 'confirmed',
+      tenantName: bookingData.tenantName,
+      tenantEmail: bookingData.tenantEmail,
+      tenantPhone: bookingData.tenantPhone,
+      property: property.title,
+      propertyLocation: property.location,
+      landlordName: property.landlord,
     };
 
-    const receipt = await createBookingTransaction(bookingTransactionData);
-    
-    if (receipt) {
-      const completeReceipt = {
-        ...receipt,
-        tenantName: bookingData.tenantName,
-        tenantEmail: bookingData.tenantEmail,
-        tenantPhone: bookingData.tenantPhone,
-        property: property.title,
-        propertyLocation: property.location,
-        landlordName: property.landlord,
-      };
-      
-      onBookingComplete(completeReceipt);
-      onClose();
-    }
+    toast({
+      title: "Booking Confirmed",
+      description: "Your booking has been confirmed successfully!",
+    });
+
+    onBookingComplete(receipt);
+    onClose();
+    setIsProcessing(false);
   };
 
   return (
@@ -198,23 +191,6 @@ const BookingModal = ({ property, isOpen, onClose, onBookingComplete }: BookingM
             </div>
           </div>
 
-          {/* Wallet Connection Status */}
-          {walletConnected && (
-            <Card className="bg-primary-light border-primary/20">
-              <CardContent className="p-4">
-                <div className="flex items-center gap-3">
-                  <Wallet className="h-5 w-5 text-primary" />
-                  <div>
-                    <p className="text-sm font-medium">Wallet Connected</p>
-                    <p className="text-xs text-muted-foreground font-mono">
-                      {formatAddress(wallet.account?.address || "")}
-                    </p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          )}
-
           {/* Security Features */}
           <Card className="bg-success-light border-success/20">
             <CardHeader className="pb-3">
@@ -249,45 +225,24 @@ const BookingModal = ({ property, isOpen, onClose, onBookingComplete }: BookingM
             >
               Cancel
             </Button>
-            {!walletConnected ? (
-              <Button
-                onClick={connectWallet}
-                className="flex-1"
-                variant="hero"
-                disabled={isProcessing}
-              >
-                {isProcessing ? (
-                  <div className="flex items-center gap-2">
-                    <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin"></div>
-                    Connecting...
-                  </div>
-                ) : (
-                  <div className="flex items-center gap-2">
-                    <Wallet className="h-4 w-4" />
-                    Connect Wallet
-                  </div>
-                )}
-              </Button>
-            ) : (
-              <Button
-                onClick={handleBooking}
-                className="flex-1"
-                variant="hero"
-                disabled={isProcessing}
-              >
-                {isProcessing ? (
-                  <div className="flex items-center gap-2">
-                    <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin"></div>
-                    Minting NFT...
-                  </div>
-                ) : (
-                  <div className="flex items-center gap-2">
-                    <CreditCard className="h-4 w-4" />
-                    Secure Booking
-                  </div>
-                )}
-              </Button>
-            )}
+            <Button
+              onClick={handleBooking}
+              className="flex-1"
+              variant="hero"
+              disabled={isProcessing}
+            >
+              {isProcessing ? (
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin"></div>
+                  Processing...
+                </div>
+              ) : (
+                <div className="flex items-center gap-2">
+                  <CreditCard className="h-4 w-4" />
+                  Secure Booking
+                </div>
+              )}
+            </Button>
           </div>
         </div>
       </DialogContent>
