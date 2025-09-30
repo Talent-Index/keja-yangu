@@ -110,7 +110,7 @@ const Index = () => {
       <Navbar />
       
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-primary via-primary-glow to-primary py-20 px-4 overflow-hidden">
+      <section className="relative hero-animated-bg py-20 px-4 overflow-hidden">
         <div className="absolute inset-0 bg-black/20"></div>
         <div className="relative container mx-auto text-center">
           <div className="max-w-4xl mx-auto">

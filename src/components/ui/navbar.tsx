@@ -31,9 +31,9 @@ const Navbar = () => {
               <Link
                 key={item.href}
                 to={item.href}
-                className={`text-sm font-medium transition-colors hover:text-primary ${
+                className={`relative text-sm font-medium transition-colors hover:text-primary after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:w-0 after:bg-primary after:transition-all after:duration-300 hover:after:w-full ${
                   location.pathname === item.href
-                    ? "text-primary"
+                    ? "text-primary after:w-full"
                     : "text-muted-foreground"
                 }`}
               >
