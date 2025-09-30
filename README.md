@@ -1,73 +1,47 @@
-# Welcome to your Lovable project
+# KejaYangu – Secure Rentals with Blockchain Receipts
 
-## Project info
+- **Live URL**: [keja-yangu.onrender.com](https://keja-yangu.onrender.com)
 
-**URL**: https://lovable.dev/projects/2be93b79-d7e0-4502-9f42-0b8ff399f453
+## Tech Stack
+- Vite + React 18 + TypeScript
+- Tailwind CSS + shadcn/ui (Radix primitives)
+- React Router v6
+- TanStack Query (React Query)
+- Recharts (charts)
+- Sui SDKs (`@mysten/dapp-kit`, `@mysten/sui`)
 
-## How can I edit this code?
-
-There are several ways of editing your application.
-
-**Use Lovable**
-
-Simply visit the [Lovable Project](https://lovable.dev/projects/2be93b79-d7e0-4502-9f42-0b8ff399f453) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
+## Run locally
+Prerequisites: Node.js 18+ and npm
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+# 1) Install dependencies
+npm ci
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# 2) Start dev server (http://localhost:5173)
 npm run dev
+
+# 3) Build for production (outputs to dist/)
+npm run build
+
+# 4) Preview the production build locally
+npm run preview
 ```
 
-**Edit a file directly in GitHub**
+## Project scripts
+- `npm run dev`: start the Vite dev server
+- `npm run build`: production build to `dist/`
+- `npm run preview`: preview the production build
+- `npm run lint`: run ESLint
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## Deploy (Render – Static Site)
+You can deploy this as a static site on Render.
 
-**Use GitHub Codespaces**
+- Build command: `npm ci && npm run build`
+- Publish directory: `dist`
+- SPA rewrite rule (to support React Router deep links):
+  - Source: `/*`, Destination: `/index.html`, Action: `200`
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+The site is currently live at [keja-yangu.onrender.com](https://keja-yangu.onrender.com).
 
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/2be93b79-d7e0-4502-9f42-0b8ff399f453) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+## Notes
+- This is a client-side rendered SPA. Ensure your host is configured to rewrite unknown routes to `index.html` so deep links do not 404.
